@@ -54,14 +54,15 @@ RUN wget -q -P /tmp \
 
 # Install conda packages.
 ENV PATH="/opt/conda/bin:$PATH"
-RUN conda install -qy conda==24.1.2 \
+RUN conda install -y python=3.10 \
+    && conda install -qy conda==23.11.0 \
+    && conda config --set solver classic \
     && conda install -y -c conda-forge \
       openmm=7.7.0 \
       pdbfixer \
       pip \
-      python=3.10 \
-      && conda install -y -c nvidia/label/cuda-${CUDA} cuda-libraries-dev cuda-nvcc cuda-nvtx cuda-cupti \
-      && conda clean --all --force-pkgs-dirs --yes
+    && conda install -y -c nvidia/label/cuda-${CUDA} cuda-libraries-dev cuda-nvcc cuda-nvtx cuda-cupti \
+    && conda clean --all --force-pkgs-dirs --yes
 
 RUN git clone https://github.com/deepmind/alphafold.git /app/alphafold
 RUN git -C /app/alphafold reset --hard $ALPHAFOLD_COMMIT

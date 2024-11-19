@@ -21,7 +21,6 @@ from kfp.v2.dsl import Output
 
 import config as config
 
-
 @dsl.component(
     base_image=config.ALPHAFOLD_COMPONENTS_IMAGE
 )
@@ -43,6 +42,8 @@ def predict(
   import logging
   import time
   import os
+  from google.cloud import storage
+  import tempfile
 
   from alphafold_utils import predict as alphafold_predict
 
@@ -52,10 +53,26 @@ def predict(
   logging.info(f'Starting model prediction {prediction_index} using model {model_name}...')
   t0 = time.time()
 
+  # Download model features from GCS if it's a GCS path
+  if model_features.uri.startswith('gs://'):
+    storage_client = storage.Client()
+    bucket_name = model_features.uri.replace('gs://', '').split('/')[0]
+    blob_path = '/'.join(model_features.uri.replace('gs://', '').split('/')[1:])
+        
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(blob_path)
+        
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        blob.download_to_filename(temp_file.name)
+        model_features_path = temp_file.name
+        logging.info(f'Downloaded model features to temporary file: {model_features_path}')
+  else:
+    model_features_path = model_features.path
+
   raw_prediction.uri = f'{raw_prediction.uri}.pkl'
   unrelaxed_protein.uri = f'{unrelaxed_protein.uri}.pdb'
   prediction_result = alphafold_predict(
-      model_features_path=model_features.path,
+      model_features_path=model_features_path,
       model_params_path=model_params.path,
       model_name=model_name,
       num_ensemble=num_ensemble,

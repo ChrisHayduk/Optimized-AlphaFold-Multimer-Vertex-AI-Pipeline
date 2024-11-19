@@ -41,18 +41,32 @@ def jackhmmer(
   from alphafold_utils import run_jackhmmer
 
   logging.info(f'Starting jackhmmer search on {database}')
+  logging.info(f'Sequence artifact URI: {sequence.uri}')
+  logging.info(f'Sequence artifact path: {sequence.path}')
   t0 = time.time()
+
+  # Ensure sequence file exists
+  if not os.path.exists(sequence.path):
+      raise FileNotFoundError(f"Sequence file not found at {sequence.path}")
 
   mount_path = ref_databases.uri
   database_path = os.path.join(mount_path, ref_databases.metadata[database])
 
-  parsed_msa, msa_format = run_jackhmmer(
+  if not os.path.exists(database_path):
+      raise FileNotFoundError(f"Database not found at {database_path}")
+
+  try:
+    parsed_msa, msa_format = run_jackhmmer(
       input_path=sequence.path,
       database_path=database_path,
       msa_path=msa.path,
       n_cpu=n_cpu,
       maxseq=maxseq
-  )
+    )
+
+  except Exception as e:
+    logging.error(f"Jackhmmer search failed: {str(e)}")
+    raise
 
   msa.metadata['category'] = 'msa'
   msa.metadata['num_sequences'] = len(parsed_msa)

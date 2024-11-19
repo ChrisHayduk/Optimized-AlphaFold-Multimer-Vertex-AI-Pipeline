@@ -21,7 +21,6 @@ from kfp.v2.dsl import Output
 
 import config as config
 
-
 @dsl.component(
     base_image=config.ALPHAFOLD_COMPONENTS_IMAGE
 )
@@ -38,15 +37,37 @@ def hhblits(
   import logging
   import os
   import time
+  import json
 
   from alphafold_utils import run_hhblits
 
   logging.info(f'Starting hhblits search on {databases}')
   t0 = time.time()
 
-  mount_path = ref_databases.uri
-  database_paths = [os.path.join(mount_path, ref_databases.metadata[database])
-                    for database in databases]
+  # Debug sequence artifact
+  logging.info("=== Sequence Artifact Debug Info ===")
+  logging.info(f"Type: {type(sequence)}")
+  logging.info(f"Dir contents: {dir(sequence)}")
+  logging.info(f"URI: {sequence.uri}")
+  logging.info(f"Path: {sequence.path}")
+  logging.info(f"Name: {sequence.name if hasattr(sequence, 'name') else 'No name'}")
+  logging.info(f"Metadata: {json.dumps(sequence.metadata, indent=2)}")
+
+  # Verify sequence file exists
+  if not os.path.exists(sequence.path):
+      raise FileNotFoundError(f"Sequence file not found at {sequence.path}")
+        
+  # Get database paths
+  database_paths = []
+  for db_name in databases:
+    db_path = os.path.join(ref_databases.uri, ref_databases.metadata[db_name])
+    if not os.path.exists(db_path):
+        raise FileNotFoundError(f"Database {db_name} not found at {db_path}")
+    database_paths.append(db_path)
+    
+  # Log the configuration
+  logging.info(f"Input sequence path: {sequence.path}")
+  logging.info(f"Database paths: {database_paths}")
 
   parsed_msa, msa_format = run_hhblits(
       input_path=sequence.path,

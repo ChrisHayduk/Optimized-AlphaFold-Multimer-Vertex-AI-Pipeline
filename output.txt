@@ -1,0 +1,1051 @@
+auditConfigs:
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: accessapproval.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: advisorynotifications.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: notebooks.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: alloydb.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: testing.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: gkemulticloud.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: apihub.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: apigee.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: apigeeconnect.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: integrations.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: apigeeregistry.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: apphub.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: artifactregistry.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: assuredoss.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: auditmanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: backupdr.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: baremetalsolution.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: batch.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: beyondcorp.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: biglake.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: analyticshub.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: bigquerydatapolicy.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: bigquerymigration.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: binaryauthorization.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: blockchainnodeengine.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: blockchainvalidatormanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: capacityplanner.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: carestudio.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: privateca.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: certificatemanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: chronicle.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: chronicleservicemanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: apigateway.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudasset.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: automl.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: bigtable.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudbilling.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudbuild.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudcommerceconsumerprocurement.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: composer.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: datafusion.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: dlp.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: dataplex.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: dataproc.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: clouddeploy.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: discoveryengine.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: domains.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: file.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudfunctions.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: healthcare.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: iap.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: ids.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudkms.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: lifesciences.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: logging.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: ml.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: managedidentities.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: memcache.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: redis.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: monitoring.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: osconfig.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudprofiler.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: pubsub.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudquotas.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudresourcemanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: retail.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: run.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudscheduler.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: sourcerepo.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: spanner.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudsql.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: firebasestorage.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudtasks.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: tpu.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudtrace.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: translate.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: commerceorggovernance.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: compute.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: confidentialcomputing.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: connectors.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: contactcenterinsights.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: contactcenteraiplatform.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: containeranalysis.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: containersecurity.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: contentwarehouse.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: customerusagedataprocessing.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: datacatalog.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: datalineage.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: datapipelines.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: databaseinsights.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: datamigration.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: dataform.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: metastore.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: datastream.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: developerconnect.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: dialogflow.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: edgecontainer.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: edgenetwork.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: documentai.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: earthengine.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: enterpriseknowledgegraph.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: enterprisepurchasing.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: clouderrorreporting.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: essentialcontacts.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: eventarc.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: firebaseappcheck.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: firebase.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: gcmcontextualcampaign-pa.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: firebasedatabase.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: firebaserules.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: datastore.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloudaicompanion.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: genomics.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: gkebackup.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: gkehub.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: gkeonprem.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: appengine.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: deploymentmanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: dns.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: netapp.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: storage.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: managedkafka.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: gsuiteaddons.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: iam.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: identitytoolkit.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: stream.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: config.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: krmapihosting.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: container.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: kubernetesmetadata.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: livestream.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: fleetengine.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: looker.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: meshconfig.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: migrationcenter.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: networkconnectivity.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: networkmanagement.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: networksecurity.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: networkservices.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: ondemandscanning.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: oracledatabase.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: orgpolicy.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: parallelstore.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: paymentsresellersubscription.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: policysimulator.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: privilegedaccessmanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: pubsublite.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: publicca.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: rapidmigrationassessment.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: recaptchaenterprise.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: recommendationengine.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: recommender.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: remotebuildexecution.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: resourcesettings.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: secretmanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: securedlandingzone.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: securitycenter.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: securitycentermanagement.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: securityposture.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: sts.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: vpcaccess.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: servicemanagement.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: servicedirectory.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: servicehealth.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: cloud.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: serviceusage.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: speakerid.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: speech.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: storageinsights.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: storagetransfer.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: telcoautomation.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: timeseriesinsights.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: trafficdirector.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: transcoder.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: transferappliance.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: translationhub.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: aiplatform.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: videostitcher.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: visionai.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: visualinspection.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: vmmigration.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: vmwareengine.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: websecurityscanner.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: workflowexecutions.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: workflows.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: workloadmanager.googleapis.com
+- auditLogConfigs:
+  - logType: ADMIN_READ
+  - logType: DATA_READ
+  - logType: DATA_WRITE
+  service: workstations.googleapis.com
+bindings:
+- members:
+  - group:liganddesignusers@alnylam.com
+  role: roles/aiplatform.admin
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-aiplatform-cc.iam.gserviceaccount.com
+  role: roles/aiplatform.customCodeServiceAgent
+- members:
+  - serviceAccount:16853584617-compute@developer.gserviceaccount.com
+  - serviceAccount:alphafoldportal-cr@test-ligand-design.iam.gserviceaccount.com
+  - serviceAccount:service-16853584617@gcp-sa-aiplatform.iam.gserviceaccount.com
+  role: roles/aiplatform.serviceAgent
+- members:
+  - serviceAccount:16853584617-compute@developer.gserviceaccount.com
+  - serviceAccount:alphafoldportal-cr@test-ligand-design.iam.gserviceaccount.com
+  - serviceAccount:pipelines-sa@test-ligand-design.iam.gserviceaccount.com
+  - serviceAccount:training-sa@test-ligand-design.iam.gserviceaccount.com
+  role: roles/aiplatform.user
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-artifactregistry.iam.gserviceaccount.com
+  role: roles/artifactregistry.serviceAgent
+- members:
+  - serviceAccount:16853584617@cloudbuild.gserviceaccount.com
+  role: roles/artifactregistry.writer
+- members:
+  - serviceAccount:16853584617@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - user:dsolodov@alnylam.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-16853584617@compute-system.iam.gserviceaccount.com
+  role: roles/compute.instanceAdmin.v1
+- members:
+  - serviceAccount:sa-ligand-design-v1-tr-dev@test-ligand-design.iam.gserviceaccount.com
+  role: roles/compute.networkAdmin
+- members:
+  - serviceAccount:service-16853584617@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-16853584617@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-16853584617@container-analysis.iam.gserviceaccount.com
+  role: roles/containeranalysis.ServiceAgent
+- members:
+  - serviceAccount:service-16853584617@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-containerscanning.iam.gserviceaccount.com
+  role: roles/containerscanning.ServiceAgent
+- members:
+  - serviceAccount:service-16853584617@dataflow-service-producer-prod.iam.gserviceaccount.com
+  role: roles/dataflow.serviceAgent
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-discoveryengine.iam.gserviceaccount.com
+  role: roles/discoveryengine.serviceAgent
+- members:
+  - group:liganddesignusers@alnylam.com
+  - serviceAccount:16853584617-compute@developer.gserviceaccount.com
+  - serviceAccount:16853584617@cloudbuild.gserviceaccount.com
+  - serviceAccount:16853584617@cloudservices.gserviceaccount.com
+  - serviceAccount:sa-ligand-design-v1-tr-dev@test-ligand-design.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:16853584617-compute@developer.gserviceaccount.com
+  - serviceAccount:alphafoldportal-cr@test-ligand-design.iam.gserviceaccount.com
+  - serviceAccount:sa-ligand-design-v1-tr-dev@test-ligand-design.iam.gserviceaccount.com
+  role: roles/file.editor
+- members:
+  - serviceAccount:service-16853584617@cloud-filer.iam.gserviceaccount.com
+  role: roles/file.serviceAgent
+- members:
+  - serviceAccount:service-16853584617@firebase-rules.iam.gserviceaccount.com
+  role: roles/firebaserules.system
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-notebooks.iam.gserviceaccount.com
+  role: roles/notebooks.serviceAgent
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-osconfig.iam.gserviceaccount.com
+  role: roles/osconfig.serviceAgent
+- members:
+  - serviceAccount:ld-instance-sa@test-ligand-design.iam.gserviceaccount.com
+  - user:dsolodov@alnylam.com
+  role: roles/owner
+- members:
+  - serviceAccount:service-16853584617@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+- members:
+  - serviceAccount:sa-ligand-design-v1-tr-dev@test-ligand-design.iam.gserviceaccount.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:alphafoldportal-cr@test-ligand-design.iam.gserviceaccount.com
+  - serviceAccount:sa-ligand-design-v1-tr-dev@test-ligand-design.iam.gserviceaccount.com
+  role: roles/run.admin
+- members:
+  - serviceAccount:service-16853584617@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:service-16853584617@service-networking.iam.gserviceaccount.com
+  role: roles/servicenetworking.serviceAgent
+- members:
+  - serviceAccount:pipelines-sa@test-ligand-design.iam.gserviceaccount.com
+  - serviceAccount:training-sa@test-ligand-design.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - serviceAccount:16853584617-compute@developer.gserviceaccount.com
+  - serviceAccount:16853584617@cloudbuild.gserviceaccount.com
+  - serviceAccount:alphafoldportal-cr@test-ligand-design.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+etag: BwYnM7w5gvw=
+version: 1

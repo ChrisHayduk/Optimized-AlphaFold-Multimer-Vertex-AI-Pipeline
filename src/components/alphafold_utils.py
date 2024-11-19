@@ -592,4 +592,4 @@ def run_hmmsearch(
     with open(template_features_path, 'wb') as f:
         pickle.dump(templates_result.features, f, protocol=4)
 
-    return parsers.parse_stockholm(template_hits), templates_result.features
+    return parsers.parse_stockholm(sto_str), templates_result.features
