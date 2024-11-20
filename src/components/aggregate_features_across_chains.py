@@ -19,6 +19,7 @@ def aggregate_features_across_chains(
     from google.cloud import storage
     import logging
     from alphafold.data import feature_processing, pipeline_multimer
+    import os
     
     storage_client = storage.Client()
     
@@ -66,7 +67,8 @@ def aggregate_features_across_chains(
     
     # Save merged features to GCS
     dest_bucket_name = output_features_path.replace('gs://', '').split('/')[0]
-    dest_blob_path = '/'.join(output_features_path.replace('gs://', '').split('/')[1:])
+    dest_prefix = '/'.join(output_features_path.replace('gs://', '').split('/')[1:])
+    dest_blob_path = os.path.join(dest_prefix, 'all_chain_features.pkl')
     dest_bucket = storage_client.bucket(dest_bucket_name)
     dest_blob = dest_bucket.blob(dest_blob_path)
     
