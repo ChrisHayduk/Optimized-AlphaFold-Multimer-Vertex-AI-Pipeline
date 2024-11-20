@@ -20,7 +20,7 @@ def aggregate_features_across_chains(
     import logging
     from alphafold.data import feature_processing, pipeline_multimer
     import os
-    
+
     storage_client = storage.Client()
     
     # Load all chain features from GCS
@@ -80,7 +80,7 @@ def aggregate_features_across_chains(
     except Exception as e:
         raise RuntimeError(f"Failed to save features to GCS at {output_features_path}: {str(e)}")
     
-    features.uri = output_features_path
+    features.uri = os.path.join(output_features_path, 'all_chain_features.pkl')
     features.metadata = {
         'is_homomer_or_monomer': is_homomer_or_monomer,
         'num_chains': len(all_chain_features)
