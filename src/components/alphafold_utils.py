@@ -208,6 +208,8 @@ def predict(
 ) -> Mapping[str, str]:
     """Runs inference on an AlphaFold model."""
 
+    random_seed = int(random_seed)
+    
     model_config = config.model_config(model_name)
     if run_multimer_system:
         model_config.model.num_ensemble_eval = num_ensemble

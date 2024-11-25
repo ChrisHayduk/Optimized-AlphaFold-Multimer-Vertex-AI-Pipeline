@@ -4,7 +4,8 @@ from kfp.v2.dsl import Input, Artifact
 import config as config
 
 @dsl.component(
-    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE
+    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE,
+    packages_to_install=['google-cloud-storage']
 )
 def create_run_id(
     sequence_path: str,

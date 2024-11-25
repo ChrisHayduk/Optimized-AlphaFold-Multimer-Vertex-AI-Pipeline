@@ -22,7 +22,8 @@ from kfp.v2.dsl import Output
 import config as config
 
 @dsl.component(
-    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE
+    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE,
+    packages_to_install=['google-cloud-storage']
 )
 def predict(
     model_features: Input[Artifact],
@@ -52,7 +53,8 @@ def predict(
 
   logging.info(f'Starting model prediction {prediction_index} using model {model_name}...')
   t0 = time.time()
-
+  
+  random_seed = int(random_seed)
   # Download model features from GCS if it's a GCS path
   if model_features.uri.startswith('gs://'):
     storage_client = storage.Client()

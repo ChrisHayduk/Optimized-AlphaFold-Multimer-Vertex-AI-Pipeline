@@ -7,7 +7,8 @@ import config as config
 
 
 @dsl.component(
-    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE
+    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE,
+    packages_to_install=['google-cloud-storage']
 )
 def configure_run_multimer(
     sequence_path: str,
@@ -108,19 +109,22 @@ def configure_run_multimer(
     # Configure model runners
     models = model_config.MODEL_PRESETS[model_preset]
     if random_seed is None:
-        random_seed = random.randrange(
-            sys.maxsize // (len(models) * num_multimer_predictions_per_model)
-        )
+        # Explicitly cast to int and ensure it's not too large
+        max_seed = sys.maxsize // (len(models) * num_multimer_predictions_per_model)
+        random_seed = int(random.randrange(max_seed))
+    else:
+        # Ensure provided random_seed is an integer
+        random_seed = int(random_seed)
 
     model_runners = []
     for model_name in models:
         for i in range(num_predictions_per_model):
+            current_seed = int(random_seed + i)  # Explicitly cast each seed to int
             model_runners.append({
-                'prediction_index': i,
+                'prediction_index': int(i),  # Also cast index to int for consistency
                 'model_name': model_name,
-                'random_seed': random_seed
+                'random_seed': current_seed
             })
-            random_seed += 1
 
     # Set metadata for the sequence artifact
     sequence.metadata['category'] = 'sequence'

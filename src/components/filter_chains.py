@@ -1,5 +1,12 @@
 from kfp.v2 import dsl
-from typing import NamedTuple
+from typing import NamedTuple, List
+from dataclasses import dataclass
+
+@dataclass
+class ChainInfo:
+    chain_id: str
+    sequence_path: str
+    description: str
 
 @dsl.component(
     base_image='python:3.9',
@@ -10,8 +17,8 @@ def filter_chains(
     per_chain_features_dir: str,
     project: str
 ) -> NamedTuple('Outputs', [
-    ('chains_to_process', list),
-    ('chains_with_precomputed', list)
+    ('chains_to_process', List[dict]),
+    ('chains_with_precomputed', List[dict])
 ]):
     """Filters chains based on presence in Google Cloud Storage."""
     from google.cloud import storage
@@ -33,15 +40,20 @@ def filter_chains(
     chains_with_precomputed = []
     
     for chain in chain_info_list:
-        # Construct the expected path for this chain's features
-        chain_path = f"{prefix}/chain_{chain['chain_id']}_features.pkl"
+        # Create a structured dictionary with explicit keys
+        processed_chain = {
+            'chain_id': str(chain['chain_id']),
+            'sequence_path': str(chain['sequence_path']),
+            'description': str(chain['description'])
+        }
         
+        chain_path = f"{prefix}/chain_{processed_chain['chain_id']}_features.pkl"
         marker_blob = bucket.blob(chain_path)
         
         if marker_blob.exists():
-            chains_with_precomputed.append(chain)
+            chains_with_precomputed.append(processed_chain)
         else:
-            chains_to_process.append(chain)
+            chains_to_process.append(processed_chain)
     
     print(f"Found {len(chains_with_precomputed)} chains with precomputed features")
     print(f"Need to process {len(chains_to_process)} chains")
