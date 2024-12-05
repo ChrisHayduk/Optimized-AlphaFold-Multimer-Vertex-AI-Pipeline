@@ -131,6 +131,7 @@ def alphafold_multimer_pipeline(
     is_run_relax: str = 'relax',
     num_multimer_predictions_per_model: int = 5,
     use_small_bfd: str = 'true',
+    model_names: list = None
 ):
     """Multimer-optimized Alphafold Inference Pipeline."""
 
@@ -141,7 +142,8 @@ def alphafold_multimer_pipeline(
     run_config = ConfigureRunOp(
         sequence_path=sequence_path,
         model_preset='multimer',
-        num_multimer_predictions_per_model=num_multimer_predictions_per_model
+        num_multimer_predictions_per_model=num_multimer_predictions_per_model,
+        model_names=model_names
     ).set_display_name('Configure Multimer Pipeline Run')
 
     model_parameters = dsl.importer(
@@ -184,7 +186,7 @@ def alphafold_multimer_pipeline(
     # Create a component to filter chains based on precomputed features
     filter_chains = FilterChainsOp(
         chain_info_list=run_config.outputs['chain_info_list'],
-        per_chain_features_dir=per_chain_features_dir.output,
+        msa_path_info=per_chain_features_dir.output,
         project=project
     ).set_display_name('Filter chains')
 
@@ -193,19 +195,19 @@ def alphafold_multimer_pipeline(
         items=filter_chains.outputs['chains_to_process'],
         parallelism=config.PARALLELISM
     ) as item:
-        # Create variables for clarity
+        # Access loop argument properties using dot notation
         chain_id = item.chain_id
         sequence_path = item.sequence_path
         description = item.description
 
         # Import the sequence artifact from GCS URI
-        raw_artifact = importer(
+        raw_artifact = dsl.importer(
             artifact_uri=sequence_path,
-            artifact_class=Artifact,
+            artifact_class=dsl.Artifact,
             metadata={
                 'chain_id': chain_id,
                 'description': description,
-                'category': 'sequence'
+                'category': 'sequence',
             },
             reimport=True,
         ).set_display_name(f"Import sequence artifact for chain {chain_id}")
@@ -263,6 +265,7 @@ def alphafold_multimer_pipeline(
             project=project,
             location=region,
             sequence=sequence_artifact.output,
+            ref_databases=reference_databases.output,
             msa1=msa_searches['uniref'].outputs['msa'],
             msa2=msa_searches['mgnify'].outputs['msa'],
             msa3=msa_searches['bfd'].outputs['msa'],

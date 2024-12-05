@@ -4,7 +4,8 @@ from kfp.v2.dsl import Artifact, Output, component, Input
 import config as config
 
 @dsl.component(
-    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE
+    base_image=config.ALPHAFOLD_COMPONENTS_IMAGE,
+    packages_to_install=['google-cloud-storage']
 )
 def download_sequence(
     sequence: Input[Artifact],

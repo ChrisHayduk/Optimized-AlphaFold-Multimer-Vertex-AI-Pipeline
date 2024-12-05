@@ -16,6 +16,7 @@ def configure_run_multimer(
     sequence: Output[Artifact],
     random_seed: int = None,
     num_multimer_predictions_per_model: int = 5,
+    model_names: list = None,
 ) -> NamedTuple(
     'ConfigureRunOutputs',
     [
@@ -107,7 +108,11 @@ def configure_run_multimer(
     print(f"Debug - Number of unique sequences: {len(set(seqs))}")
     print(f"Debug - is_homomer_or_monomer: {is_homomer_or_monomer}")
     # Configure model runners
-    models = model_config.MODEL_PRESETS[model_preset]
+    if model_names is not None:
+        models = model_names
+    else:
+        models = model_config.MODEL_PRESETS[model_preset]
+
     if random_seed is None:
         # Explicitly cast to int and ensure it's not too large
         max_seed = sys.maxsize // (len(models) * num_multimer_predictions_per_model)

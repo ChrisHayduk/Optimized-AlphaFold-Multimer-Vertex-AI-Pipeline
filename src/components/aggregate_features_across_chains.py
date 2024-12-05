@@ -7,7 +7,7 @@ import config as config
     packages_to_install=['google-cloud-storage']
 )
 def aggregate_features_across_chains(
-    per_chain_features_dir: str,  # GCS path
+    per_chain_features_dir: str,  # JSON string from create_run_id
     sequences: Input[Artifact],
     is_homomer_or_monomer: str,
     output_features_path: str,    # GCS path
@@ -16,6 +16,7 @@ def aggregate_features_across_chains(
     """Aggregates features across chains for multimer prediction."""
     import pickle
     import tempfile
+    import json
     from google.cloud import storage
     import logging
     from alphafold.data import feature_processing, pipeline_multimer
@@ -27,18 +28,27 @@ def aggregate_features_across_chains(
     all_chain_features = {}
     chain_info = sequences.metadata['chain_info']
     
-    # Parse source bucket info
-    source_bucket_name = per_chain_features_dir.replace('gs://', '').split('/')[0]
-    source_prefix = '/'.join(per_chain_features_dir.replace('gs://', '').split('/')[1:])
-    source_bucket = storage_client.bucket(source_bucket_name)
+    # Parse the features paths from JSON
+    paths_info = json.loads(per_chain_features_dir)
     
     for chain_data in chain_info:
         chain_id = chain_data['chain_id']
-        chain_blob_path = f"{source_prefix}/chain_{chain_id}_features.pkl"
-        blob = source_bucket.blob(chain_blob_path)
+        
+        # Get the features path for this chain
+        if chain_id not in paths_info['chains']:
+            raise ValueError(f"No path information found for chain {chain_id}")
+            
+        features_path = paths_info['chains'][chain_id]
+        
+        # Parse bucket and blob path
+        bucket_name = features_path.replace('gs://', '').split('/')[0]
+        blob_path = '/'.join(features_path.replace('gs://', '').split('/')[1:]) + '/features.pkl'
+        
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
         
         if not blob.exists():
-            raise FileNotFoundError(f"Features file not found in GCS for chain {chain_id}: gs://{source_bucket_name}/{chain_blob_path}")
+            raise FileNotFoundError(f"Features file not found in GCS for chain {chain_id}: gs://{bucket_name}/{blob_path}")
         
         # Download and process features
         with tempfile.NamedTemporaryFile() as temp_file:
@@ -64,6 +74,10 @@ def aggregate_features_across_chains(
         # For multimers, pair and merge the features
         np_example = feature_processing.pair_and_merge(
             all_chain_features=all_chain_features)
+    
+    # Use the full protein features path from paths_info if available, otherwise use provided output_features_path
+    if 'full_protein' in paths_info:
+        output_features_path = paths_info['full_protein']
     
     # Save merged features to GCS
     dest_bucket_name = output_features_path.replace('gs://', '').split('/')[0]

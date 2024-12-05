@@ -8,16 +8,18 @@ import config as config
 )
 def aggregate_features_multimer(
     sequence: Input[Artifact],
+    ref_databases: Input[Artifact],
     msa1: Input[Artifact],
     msa2: Input[Artifact],
     msa3: Input[Artifact],
+    uniprot_msa: Output[Artifact],
     template_features: Input[Artifact],
     features: Output[Artifact],
     chain_id: str,
     per_chain_features_dir: str,
     is_homomer: str,
     maxseq: int,
-    n_cpu: int = 8
+    n_cpu: int = 8,
 ):
     """Conditionally aggregates MSAs and template features based on homomer status."""
     import logging
@@ -25,6 +27,7 @@ def aggregate_features_multimer(
     import os
     import pickle
     import tempfile
+    import json
     from google.cloud import storage
     from alphafold.data import parsers, pipeline
     from alphafold.data import msa_pairing
@@ -57,10 +60,12 @@ def aggregate_features_multimer(
             try:
                 logging.info('Running UniProt search for heteromer')
                 # Run jackhmmer search
+                mount_path = ref_databases.uri
+                database_path = os.path.join(mount_path, ref_databases.metadata['uniprot'])
                 msa, msa_format = run_jackhmmer(
                     input_path=sequence.path,
-                    database_path='uniprot',
-                    msa_path=msa.path,
+                    database_path=database_path,
+                    msa_path=uniprot_msa.path,
                     n_cpu=n_cpu,
                     maxseq=maxseq
                 )
@@ -71,7 +76,12 @@ def aggregate_features_multimer(
                     f'{k}_all_seq': v for k, v in all_seq_features.items()
                         if k in valid_feats
                 }
+                print("MSA: ", msa)
+                print("MSA features: ", all_seq_msa_features)
+
                 model_features.update(all_seq_msa_features)
+
+                print("Model features: ", model_features)
                     
             except Exception as e:
                 logging.warning(f"Failed to process uniprot MSA for chain {chain_id}: {str(e)}")
@@ -80,13 +90,16 @@ def aggregate_features_multimer(
         with open(local_features_path, 'wb') as f:
             pickle.dump(model_features, f, protocol=4)
         
+        # Parse the features path from the per_chain_features_dir (which is the JSON from create_run_id)
+        paths_info = json.loads(per_chain_features_dir)
+        chain_path = paths_info['chains'][chain_id]
+
+        # Parse bucket name and blob path from features path
+        bucket_name = chain_path.replace('gs://', '').split('/')[0]
+        blob_path = '/'.join(chain_path.replace('gs://', '').split('/')[1:]) + '/features.pkl'
+        
         # Upload to GCS
         storage_client = storage.Client()
-        
-        # Parse bucket name and blob path from per_chain_features_dir
-        bucket_name = per_chain_features_dir.replace('gs://', '').split('/')[0]
-        base_path = '/'.join(per_chain_features_dir.replace('gs://', '').split('/')[1:])
-        blob_path = f"{base_path}/chain_{chain_id}_features.pkl"
         
         # Get or create bucket
         try:
@@ -96,7 +109,7 @@ def aggregate_features_multimer(
             try:
                 bucket = storage_client.create_bucket(
                     bucket_name,
-                    location="us-central1"  # Specify your desired location
+                    location="us-central1"
                 )
                 logging.info(f"Created new bucket: {bucket_name}")
             except Exception as e:

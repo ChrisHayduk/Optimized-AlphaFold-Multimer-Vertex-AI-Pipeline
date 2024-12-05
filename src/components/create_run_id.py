@@ -21,6 +21,9 @@ def create_run_id(
     import json
     import tempfile
     from google.cloud import storage
+    from typing import Dict, List
+    from alphafold.data import parsers
+    from alphafold.data import pipeline_multimer  # Add this import
     
     # Parse the GCS path
     if not sequence_path.startswith('gs://'):
@@ -43,41 +46,67 @@ def create_run_id(
         with open(temp_file.name, 'r') as f:
             sequence_content = f.read()
     
-    # Create a dictionary of all parameters that affect the run
-    run_params = {
-        'sequence_content': sequence_content,
+    # Parse the sequences using AlphaFold's parser
+    seqs, seq_descs = parsers.parse_fasta(sequence_content)
+    chain_id_map = pipeline_multimer._make_chain_id_map(
+        sequences=seqs,
+        descriptions=seq_descs
+    )
+    
+    # Base parameters that affect the run
+    base_params = {
         'use_small_bfd': use_small_bfd,
         'max_template_date': max_template_date,
         'uniref_max_hits': uniref_max_hits,
         'mgnify_max_hits': mgnify_max_hits,
         'uniprot_max_hits': uniprot_max_hits
     }
+
+    storage_client = storage.Client()
+    output_bucket = storage_client.bucket(project)
     
-    # Convert to sorted JSON string to ensure consistent ordering
-    params_str = json.dumps(run_params, sort_keys=True)
-    
-    # Create hash of the combined string
-    hash_object = hashlib.sha256(params_str.encode())
-    full_hash = hash_object.hexdigest()
-    
-    unique_run_id = full_hash
-    output_bucket_name = project
-    gcs_path = f"gs://{output_bucket_name}/msa/{unique_run_id}"
-    
-    # Create output bucket if it doesn't exist
-    output_bucket = storage_client.bucket(output_bucket_name)
-    
+    # Create bucket if it doesn't exist
     if not output_bucket.exists():
         try:
             output_bucket = storage_client.create_bucket(
-                output_bucket_name,
-                location="us-central1"  # You might want to make this configurable
+                project,
+                location="us-central1"
             )
-            print(f"Bucket {output_bucket_name} created")
+            print(f"Bucket {project} created")
         except Exception as e:
             print(f"Error creating bucket: {str(e)}")
-            # Continue even if bucket creation fails - it might exist but not be accessible
-            # to check via exists() due to permissions
             pass
+
+    # Create paths for individual chains using the chain_id_map
+    chain_paths = {}
+    for chain_id, fasta_chain in chain_id_map.items():
+        chain_params = base_params.copy()
+        chain_params['sequence_content'] = fasta_chain.sequence
+
+        print(f"Chain params for chain {chain_id}: {chain_params}")
+        
+        params_str = json.dumps(chain_params, sort_keys=True)
+        hash_object = hashlib.sha256(params_str.encode())
+        chain_hash = hash_object.hexdigest()
+        
+        chain_paths[chain_id] = f"gs://{project}/chain_msas/{chain_hash}"
+
+    # Create path for full protein
+    full_params = base_params.copy()
+    full_params['sequence_content'] = sequence_content
     
-    return gcs_path
+    params_str = json.dumps(full_params, sort_keys=True)
+    hash_object = hashlib.sha256(params_str.encode())
+    full_hash = hash_object.hexdigest()
+    
+    full_protein_path = f"gs://{project}/full_protein_msas/{full_hash}"
+
+    # Return all paths as a JSON string
+    result_paths = {
+        'full_protein': full_protein_path,
+        'chains': chain_paths
+    }
+
+    print("Results paths: ", result_paths)
+    
+    return json.dumps(result_paths, sort_keys=True)
