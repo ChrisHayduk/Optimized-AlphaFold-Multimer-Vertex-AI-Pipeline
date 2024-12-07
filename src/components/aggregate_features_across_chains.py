@@ -21,6 +21,7 @@ def aggregate_features_across_chains(
     import logging
     from alphafold.data import feature_processing, pipeline_multimer
     import os
+    import numpy as np
 
     storage_client = storage.Client()
     
@@ -31,6 +32,25 @@ def aggregate_features_across_chains(
     # Parse the features paths from JSON
     paths_info = json.loads(per_chain_features_dir)
     
+    # Helper function to print shapes of key features
+    def print_feature_shapes(chain_id, features_dict, prefix=""):
+        # This function prints the shapes of some critical arrays
+        keys_to_check = [
+            'msa', 'msa_all_seq', 'template_aatype', 'aatype', 
+            'num_alignments', 'num_alignments_all_seq'
+        ]
+        print(f"{prefix}Feature shapes for chain {chain_id}:")
+        for key in keys_to_check:
+            if key in features_dict:
+                val = features_dict[key]
+                if isinstance(val, np.ndarray):
+                    print(f"  {key}: shape {val.shape}")
+                else:
+                    print(f"  {key}: not an array (type: {type(val)})")
+            else:
+                print(f"  {key}: not found in features")
+        print("-------------------------------------------------")
+
     for chain_data in chain_info:
         chain_id = chain_data['chain_id']
         
@@ -55,27 +75,54 @@ def aggregate_features_across_chains(
             blob.download_to_filename(temp_file.name)
             with open(temp_file.name, 'rb') as f:
                 chain_features = pickle.load(f)
-
+                print(f"Chain features keys before monomer processing: {chain_features.keys()}")
+                
+                # Print shapes before monomer processing
+                print_feature_shapes(chain_id, chain_features, prefix="Before monomer processing:")
+                
                 # Convert monomer features to multimer format
                 chain_features = pipeline_multimer.convert_monomer_features(
                     monomer_features=chain_features,
                     chain_id=chain_id
                 )
+                print(f"Chain features keys after monomer processing: {chain_features.keys()}")
+                
+                # Print shapes after monomer processing
+                print_feature_shapes(chain_id, chain_features, prefix="After monomer processing:")
+
                 all_chain_features[chain_id] = chain_features
     
-    # Add assembly features and merge
+    # Add assembly features
     all_chain_features = pipeline_multimer.add_assembly_features(all_chain_features)
-    
+
+    # Print shapes after adding assembly features
+    for cid, feats in all_chain_features.items():
+        print_feature_shapes(cid, feats, prefix="After assembly features:")
+
     if is_homomer_or_monomer == 'true' and len(all_chain_features) == 1:
         # For monomers, just use the single chain features
         chain_id = next(iter(all_chain_features))
         np_example = all_chain_features[chain_id]
     else:
         # For multimers, pair and merge the features
+        print(f"Pairing and merging {len(all_chain_features)} chains")
+        print(f"All chain features keys: {all_chain_features.keys()}")
+
+        # Print shapes before pair_and_merge
+        for cid, feats in all_chain_features.items():
+            print_feature_shapes(cid, feats, prefix="Before pair_and_merge:")
+
         np_example = feature_processing.pair_and_merge(
             all_chain_features=all_chain_features)
-    
-    # Use the full protein features path from paths_info if available, otherwise use provided output_features_path
+        
+        # Print shapes after pair_and_merge
+        print_feature_shapes("merged", np_example, prefix="After pair_and_merge:")
+        
+        print_feature_shapes("merged", np_example, prefix="Before pad_msa:")
+        np_example = pipeline_multimer.pad_msa(np_example, 512)
+        print_feature_shapes("merged", np_example, prefix="After pad_msa:")
+        
+    # Use the full protein features path from paths_info if available
     if 'full_protein' in paths_info:
         output_features_path = paths_info['full_protein']
     

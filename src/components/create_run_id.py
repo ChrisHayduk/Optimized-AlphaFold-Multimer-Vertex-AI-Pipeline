@@ -10,6 +10,7 @@ import config as config
 def create_run_id(
     sequence_path: str,
     use_small_bfd: str,
+    skip_msa: str,
     max_template_date: str,
     uniref_max_hits: int,
     mgnify_max_hits: int,
@@ -54,59 +55,76 @@ def create_run_id(
     )
     
     # Base parameters that affect the run
-    base_params = {
+    base_params_no_skip = {
         'use_small_bfd': use_small_bfd,
         'max_template_date': max_template_date,
         'uniref_max_hits': uniref_max_hits,
         'mgnify_max_hits': mgnify_max_hits,
         'uniprot_max_hits': uniprot_max_hits
+        # Notice we intentionally omit skip_msa here
     }
 
-    storage_client = storage.Client()
-    output_bucket = storage_client.bucket(project)
-    
-    # Create bucket if it doesn't exist
-    if not output_bucket.exists():
-        try:
-            output_bucket = storage_client.create_bucket(
-                project,
-                location="us-central1"
-            )
-            print(f"Bucket {project} created")
-        except Exception as e:
-            print(f"Error creating bucket: {str(e)}")
-            pass
+    # Function to compute hash and check blob existence
+    def compute_hash_and_check(params: dict, sequence_str: str, prefix: str):
+        params_copy = params.copy()
+        params_copy['sequence_content'] = sequence_str
+        params_str = json.dumps(params_copy, sort_keys=True)
+        hash_object = hashlib.sha256(params_str.encode())
+        current_hash = hash_object.hexdigest()
+        path = f"gs://{project}/{prefix}/{current_hash}"
 
-    # Create paths for individual chains using the chain_id_map
+        # Check if blob exists
+        out_bucket = storage_client.bucket(project)
+        # Create bucket if it doesn't exist
+        if not out_bucket.exists():
+            try:
+                out_bucket = storage_client.create_bucket(
+                    project,
+                    location="us-central1"
+                )
+                print(f"Bucket {project} created")
+            except Exception as e:
+                print(f"Error creating bucket: {str(e)}")
+        
+        # The path is a directory; actual file might be `features.pkl` or MSA files.
+        # We'll just check if there's any blob starting with this prefix.
+        # For a minimal existence check, let's just see if the prefix directory has any blob.
+        # If directory is empty, we consider that it doesn't exist.
+        prefix_path = f"{prefix}/{current_hash}"
+        blobs = list(out_bucket.list_blobs(prefix=prefix_path))
+        exists = len(blobs) > 0
+        
+        return path, exists
+    
+    # Create paths for individual chains using chain_id_map, trying without skip_msa first
     chain_paths = {}
     for chain_id, fasta_chain in chain_id_map.items():
-        chain_params = base_params.copy()
-        chain_params['sequence_content'] = fasta_chain.sequence
+        path_no_skip, exists_no_skip = compute_hash_and_check(base_params_no_skip, fasta_chain.sequence, "chain_msas")
+        if exists_no_skip:
+            # Use no skip_msa path
+            chain_paths[chain_id] = path_no_skip
+        else:
+            # Include skip_msa and recompute
+            base_params_with_skip = base_params_no_skip.copy()
+            base_params_with_skip['skip_msa'] = skip_msa
+            path_with_skip, _ = compute_hash_and_check(base_params_with_skip, fasta_chain.sequence, "chain_msas")
+            chain_paths[chain_id] = path_with_skip
 
-        print(f"Chain params for chain {chain_id}: {chain_params}")
-        
-        params_str = json.dumps(chain_params, sort_keys=True)
-        hash_object = hashlib.sha256(params_str.encode())
-        chain_hash = hash_object.hexdigest()
-        
-        chain_paths[chain_id] = f"gs://{project}/chain_msas/{chain_hash}"
+    # Do the same for the full protein
+    path_no_skip, exists_no_skip = compute_hash_and_check(base_params_no_skip, sequence_content, "full_protein_msas")
+    if exists_no_skip:
+        full_protein_path = path_no_skip
+    else:
+        base_params_with_skip = base_params_no_skip.copy()
+        base_params_with_skip['skip_msa'] = skip_msa
+        path_with_skip, _ = compute_hash_and_check(base_params_with_skip, sequence_content, "full_protein_msas")
+        full_protein_path = path_with_skip
 
-    # Create path for full protein
-    full_params = base_params.copy()
-    full_params['sequence_content'] = sequence_content
-    
-    params_str = json.dumps(full_params, sort_keys=True)
-    hash_object = hashlib.sha256(params_str.encode())
-    full_hash = hash_object.hexdigest()
-    
-    full_protein_path = f"gs://{project}/full_protein_msas/{full_hash}"
-
-    # Return all paths as a JSON string
     result_paths = {
         'full_protein': full_protein_path,
         'chains': chain_paths
     }
 
-    print("Results paths: ", result_paths)
+    print("Result paths:", result_paths)
     
     return json.dumps(result_paths, sort_keys=True)

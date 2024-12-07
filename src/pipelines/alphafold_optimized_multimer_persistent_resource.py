@@ -14,7 +14,7 @@
 """Multimer-optimized Alphafold Inference Pipeline."""
 from google_cloud_pipeline_components.v1.custom_job import create_custom_training_job_from_component
 from kfp.v2 import dsl
-from kfp.v2.dsl import Artifact, importer
+from kfp.v2.dsl import Artifact, importer, Output
 
 import config as config
 from components.aggregate_features_multimer import aggregate_features_multimer
@@ -114,6 +114,11 @@ JobRelaxOp = create_custom_training_job_from_component(
     boot_disk_size_gb=config.RELAX_PERSISTENT_DISK_SIZE,
 )
 
+@dsl.component
+def no_op_artifact_output(empty_artifact: Output[Artifact]):
+    # Just create an empty file
+    with open(empty_artifact.path, 'w') as f:
+        f.write("")  # empty file
 
 @dsl.pipeline(
     name='alphafold-multimer-optimized',
@@ -131,6 +136,7 @@ def alphafold_multimer_pipeline(
     is_run_relax: str = 'relax',
     num_multimer_predictions_per_model: int = 5,
     use_small_bfd: str = 'true',
+    skip_msa: str = 'false',
     model_names: list = None
 ):
     """Multimer-optimized Alphafold Inference Pipeline."""
@@ -174,6 +180,7 @@ def alphafold_multimer_pipeline(
     per_chain_features_dir = CreateRunIdOp(
         sequence_path=sequence_path,
         use_small_bfd=use_small_bfd,
+        skip_msa=skip_msa,
         max_template_date=max_template_date,
         uniref_max_hits=uniref_max_hits,
         mgnify_max_hits=mgnify_max_hits,
@@ -195,14 +202,12 @@ def alphafold_multimer_pipeline(
         items=filter_chains.outputs['chains_to_process'],
         parallelism=config.PARALLELISM
     ) as item:
-        # Access loop argument properties using dot notation
         chain_id = item.chain_id
-        sequence_path = item.sequence_path
+        sequence_path_for_chain = item.sequence_path
         description = item.description
 
-        # Import the sequence artifact from GCS URI
         raw_artifact = dsl.importer(
-            artifact_uri=sequence_path,
+            artifact_uri=sequence_path_for_chain,
             artifact_class=dsl.Artifact,
             metadata={
                 'chain_id': chain_id,
@@ -212,71 +217,88 @@ def alphafold_multimer_pipeline(
             reimport=True,
         ).set_display_name(f"Import sequence artifact for chain {chain_id}")
 
-        # Download sequence
         sequence_artifact = DownloadSequenceOp(sequence=raw_artifact.output)
-        
-        # MSA searches
-        msa_searches = {}
-        
-        # Uniref search
-        msa_searches['uniref'] = JackhmmerOp(
-            project=project,
-            location=region,
-            database='uniref90',
-            ref_databases=reference_databases.output,
-            sequence=sequence_artifact.output,
-            maxseq=uniref_max_hits,
-        ).set_display_name('Search Uniref')
 
-        # Mgnify search
-        msa_searches['mgnify'] = JackhmmerOp(
-            project=project,
-            location=region,
-            database='mgnify',
-            ref_databases=reference_databases.output,
-            sequence=sequence_artifact.output,
-            maxseq=mgnify_max_hits,
-        ).set_display_name('Search Mgnify')
+        # If skip_msa is false, run MSA searches and template search
+        with dsl.Condition(skip_msa == 'false'):
+            uniref_msa = JackhmmerOp(
+                project=project,
+                location=region,
+                database='uniref90',
+                ref_databases=reference_databases.output,
+                sequence=sequence_artifact.output,
+                maxseq=uniref_max_hits,
+            ).set_display_name('Search Uniref')
 
-        # BFD search (combined component)
-        msa_searches['bfd'] = BFDSearchOp(
-            project=project,
-            location=region,
-            sequence=sequence_artifact.output,
-            ref_databases=reference_databases.output,
-            use_small_bfd=use_small_bfd,
-        ).set_display_name('Search BFD')
+            mgnify_msa = JackhmmerOp(
+                project=project,
+                location=region,
+                database='mgnify',
+                ref_databases=reference_databases.output,
+                sequence=sequence_artifact.output,
+                maxseq=mgnify_max_hits,
+            ).set_display_name('Search Mgnify')
 
-        # PDB search
-        search_pdb = HHsearchOp(
-            project=project,
-            location=region,
-            template_db='pdb_seqres',
-            mmcif_db='pdb_mmcif',
-            obsolete_db='pdb_obsolete',
-            max_template_date=max_template_date,
-            ref_databases=reference_databases.output,
-            sequence=sequence_artifact.output,
-            msa=msa_searches['uniref'].outputs['msa'],
-        ).set_display_name('Search PDB')
+            bfd_msa = BFDSearchOp(
+                project=project,
+                location=region,
+                sequence=sequence_artifact.output,
+                ref_databases=reference_databases.output,
+                use_small_bfd=use_small_bfd,
+            ).set_display_name('Search BFD')
 
-        # Aggregate features
-        aggregate_features = AggregateOp(
-            project=project,
-            location=region,
-            sequence=sequence_artifact.output,
-            ref_databases=reference_databases.output,
-            msa1=msa_searches['uniref'].outputs['msa'],
-            msa2=msa_searches['mgnify'].outputs['msa'],
-            msa3=msa_searches['bfd'].outputs['msa'],
-            template_features=search_pdb.outputs['template_features'],
-            chain_id=chain_id,
-            per_chain_features_dir=per_chain_features_dir.output,
-            is_homomer=run_config.outputs['is_homomer_or_monomer'],
-            maxseq=uniprot_max_hits,
-        ).after(per_chain_features_dir).after(search_pdb).set_display_name(f"Aggregate features chain {chain_id}")
-        
-        chain_feature_ops.append(aggregate_features)
+            search_pdb = HHsearchOp(
+                project=project,
+                location=region,
+                template_db='pdb_seqres',
+                mmcif_db='pdb_mmcif',
+                obsolete_db='pdb_obsolete',
+                max_template_date=max_template_date,
+                ref_databases=reference_databases.output,
+                sequence=sequence_artifact.output,
+                msa=uniref_msa.outputs['msa'],
+            ).set_display_name('Search PDB')
+
+            aggregate_features = AggregateOp(
+                project=project,
+                location=region,
+                sequence=sequence_artifact.output,
+                ref_databases=reference_databases.output,
+                msa1=uniref_msa.outputs['msa'],
+                msa2=mgnify_msa.outputs['msa'],
+                msa3=bfd_msa.outputs['msa'],
+                template_features=search_pdb.outputs['template_features'],
+                chain_id=chain_id,
+                per_chain_features_dir=per_chain_features_dir.output,
+                is_homomer=run_config.outputs['is_homomer_or_monomer'],
+                maxseq=uniprot_max_hits,
+                skip_msa=skip_msa
+            ).after(search_pdb, per_chain_features_dir).set_display_name(f"Aggregate features chain {chain_id} (with MSA)")
+
+            chain_feature_ops.append(aggregate_features)
+
+        # If skip_msa is true, run aggregator without MSAs or template features
+        with dsl.Condition(skip_msa == 'true'):
+            no_template = no_op_artifact_output()
+            no_msa_art = no_op_artifact_output()
+            
+            aggregate_features_no_msa = AggregateOp(
+                project=project,
+                location=region,
+                sequence=sequence_artifact.output,
+                ref_databases=reference_databases.output,
+                msa1=no_msa_art.output,
+                msa2=no_msa_art.output,
+                msa3=no_msa_art.output,
+                template_features=no_template.output,
+                chain_id=chain_id,
+                per_chain_features_dir=per_chain_features_dir.output,
+                is_homomer=run_config.outputs['is_homomer_or_monomer'],
+                maxseq=uniprot_max_hits,
+                skip_msa=skip_msa
+            ).after(per_chain_features_dir).set_display_name(f"Aggregate features chain {chain_id} (no MSA)")
+
+            chain_feature_ops.append(aggregate_features_no_msa)
 
     # Aggregate features across chains
     aggregate_features_across_chains = AggregateFeaturesAcrossChainsOp(
