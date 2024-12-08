@@ -100,7 +100,7 @@ def create_run_id(
     chain_paths = {}
     for chain_id, fasta_chain in chain_id_map.items():
         path_no_skip, exists_no_skip = compute_hash_and_check(base_params_no_skip, fasta_chain.sequence, "chain_msas")
-        if exists_no_skip:
+        if exists_no_skip or skip_msa == 'true':
             # Use no skip_msa path
             chain_paths[chain_id] = path_no_skip
         else:

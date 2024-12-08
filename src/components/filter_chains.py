@@ -46,6 +46,7 @@ def filter_chains(
             # Check if MSA exists
             bucket_name = msa_path.split('/')[2]
             msa_prefix = '/'.join(msa_path.split('/')[3:])
+            print('Bucket name: {bucket_name}, msa_prefix: {msa_prefix}')
             bucket = client.bucket(bucket_name)
             marker_blob = bucket.blob(f"{msa_prefix}/features.pkl")
             
